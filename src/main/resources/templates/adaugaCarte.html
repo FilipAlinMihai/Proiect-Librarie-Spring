@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Adauga o carte</title>
+    <style>
+
+        .principal
+        {
+            margin: auto;
+            width: 50%;
+            padding: 15px;
+            border:5px solid #796dce;
+            text-align:center;
+
+        }
+    </style>
+</head>
+<body>
+<div class="principal">
+<h2>=====================</h2>
+<h2>This Is The Home Page</h2>
+<h2>=====================</h2>
+</div>
+</br>
+</br>
+
+<div class="principal">
+    <h1>Login Form</h1>
+
+    <form th:action="@{/adaugaCarte}" th:object="${addBook}" method="post">
+        <p th:if="${invalidData}" class="error" style="color: crimson;font-size: 25px;">Date incorecte</p>
+        <div class="mb-3">
+            <label for="titlu">Titlu</label>
+            <input type="text" id="titlu" name="titlu" autofocus="autofocus"/>
+        </div>
+        <div class="mb-3">
+            <label for="autor">Autor</label>
+            <input type="text" id="autor" name="autor" />
+        </div>
+        <div class="mb-3">
+            <label for="nrpagini">Numar De Pagini</label>
+            <input type="number" id="nrpagini" name="nrpagini" />
+        </div>
+        <br/>
+        <button type="submit" th:value="AdaugareCarte" class="btn btn-primary">Adauga</button>
+    </form>
+
+    </br>
+    <a th:href="@{/home}"><button class="btn btn-primary">Inapoi</button></a>
+
+</div>
+
+</body>
+</html>
