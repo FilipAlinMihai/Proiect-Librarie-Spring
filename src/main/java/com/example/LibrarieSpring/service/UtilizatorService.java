@@ -15,7 +15,7 @@ public class UtilizatorService {
 
     public void adauaga(Utilizator utilizator)
     {
-        ur.save(utilizator);
+        ur.saveAndFlush(utilizator);
     }
 
     public List<Utilizator> getAllUtilizatori()
@@ -30,5 +30,10 @@ public class UtilizatorService {
 
         Utilizator u=ur.findFirstByEmail( email);
         return u;
+    }
+
+    public Utilizator getUtilizatorById(long id)
+    {
+        return ur.findById(id);
     }
 }

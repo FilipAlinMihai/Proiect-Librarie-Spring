@@ -12,4 +12,5 @@ import java.util.List;
 public interface ElementColectieRepository  extends JpaRepository<ElementColectie,Long> {
 
     List<ElementColectie> findByCarteAndColectie(Carte carte, Colectie colectie);
+    List<ElementColectie> findByColectie(Colectie colectie);
 }

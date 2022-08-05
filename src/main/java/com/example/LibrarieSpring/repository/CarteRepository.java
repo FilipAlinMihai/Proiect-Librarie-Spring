@@ -13,4 +13,8 @@ public interface CarteRepository extends JpaRepository<Carte,Long> {
     List<Carte> findByUtilizator(Utilizator utilizator);
 
     Carte findFirstByAutorAndTitluAndUtilizator(String autor, String titlu, Utilizator utilizator);
+
+    Carte findFirstByAutorAndTitlu(String autor,String titlu);
+
+
 }

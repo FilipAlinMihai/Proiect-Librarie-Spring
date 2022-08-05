@@ -31,6 +31,14 @@ public class Carte {
         nrcitite=0;
     }
 
+    public Carte(int citite,String t,String a)
+    {
+        titlu=t;
+        autor=a;
+        nrcitite=citite;
+        nrcitite=0;
+    }
+
     public Carte(String t,String a,int nr,Utilizator utilizator)
     {
         titlu=t;

@@ -3,6 +3,7 @@ package com.example.LibrarieSpring.controller;
 import com.example.LibrarieSpring.LoginForm;
 import com.example.LibrarieSpring.SigninForm;
 import com.example.LibrarieSpring.entity.Utilizator;
+import com.example.LibrarieSpring.service.LoginService;
 import com.example.LibrarieSpring.service.UtilizatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ public class LoginController {
     @Autowired
     UtilizatorService us;
 
+    @Autowired
+    LoginService ls;
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLoginForm()
     {
@@ -28,15 +32,12 @@ public class LoginController {
     @RequestMapping(value = "/login" , method=RequestMethod.POST)
     public String login(@ModelAttribute(name="loginForm") LoginForm loginForm, Model model)
     {
-        String username=loginForm.getUsername();
-        String password=loginForm.getPassword();
-        Utilizator u=us.getPrimulUtilizatorByEmail(username);
-        if(!(u ==null))
-        if(u.getEmail().equals(username) && u.getParola().equals(password))
-        {
-            utilizatorul=u;
-            return "home";
-        }
+       if(ls.login(loginForm))
+       {
+           Utilizator u=us.getPrimulUtilizatorByEmail(loginForm.getUsername());
+           utilizatorul=u;
+           return "home";
+       }
 
         model.addAttribute("invalidCredentials",true);
 
@@ -53,24 +54,12 @@ public class LoginController {
     @RequestMapping(value = "/inregistrare" , method=RequestMethod.POST)
     public String inregistrare(@ModelAttribute(name="signinForm") SigninForm signinForm, Model model)
     {
-        String email=signinForm.getEmail();
-        String parola1=signinForm.getParola1();
-        String parola2=signinForm.getParola2();
-
-        if(parola2.compareTo(parola1)==0)
+        if(ls.inregistrare(signinForm))
         {
-            Utilizator u=us.getPrimulUtilizatorByEmail(email);
-            if(u==null)
-            {
-                Utilizator u1=new Utilizator(email,parola1);
-                us.adauaga(u1);
-                utilizatorul=u1;
-                return "home";
-            }
+            Utilizator u1=us.getPrimulUtilizatorByEmail(signinForm.getEmail());
+            utilizatorul=u1;
+            return "home";
         }
-
-
-
 
         model.addAttribute("invalidData",true);
 

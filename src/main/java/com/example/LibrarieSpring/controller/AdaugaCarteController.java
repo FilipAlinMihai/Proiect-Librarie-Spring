@@ -1,16 +1,16 @@
 package com.example.LibrarieSpring.controller;
 
 import com.example.LibrarieSpring.entity.Carte;
+import com.example.LibrarieSpring.repository.CarteRepository;
 import com.example.LibrarieSpring.service.CarteService;
 import com.example.LibrarieSpring.service.UtilizatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class AdaugaCarteController {
@@ -20,6 +20,9 @@ public class AdaugaCarteController {
 
     @Autowired
     CarteService cs;
+
+    @Autowired
+    CarteRepository cr;
 
     @RequestMapping(value = "/adaugaCarte", method = RequestMethod.GET)
     public String getAddBookForm()
@@ -31,21 +34,10 @@ public class AdaugaCarteController {
     @RequestMapping(value = "/adaugaCarte" , method=RequestMethod.POST)
     public String addBook(@ModelAttribute(name="addBook") Carte addBook, Model model)
     {
-        String titlu=addBook.getTitlu();
-        String autor=addBook.getAutor();
-        int nr=addBook.getNrpagini();
-        Carte carteDeAdaugat=new Carte(titlu,autor,nr,LoginController.utilizatorul);
-
-        List<Carte> cartiDuplicate=cs.cautaCarteAutorTitluUtilizator(autor,titlu,LoginController.utilizatorul);
-
-        if(cartiDuplicate.size()==0)
+        if(cs.adaugaCarte(addBook))
         {
-            cs.adaugaCarte(carteDeAdaugat);
             return "home";
         }
-
-        //System.out.println(carteDeAdaugat.afisareCarte());
-
         model.addAttribute("invalidData",true);
 
         return "adaugaCarte";
@@ -68,6 +60,27 @@ public class AdaugaCarteController {
         return "afisareCarti";
     }
 
+    @RequestMapping(value = "/amCitit", method = RequestMethod.GET)
+    public String getAdaugaProgres()
+    {
+        return "amCitit";
+    }
+
+    @RequestMapping(value = "/amCitit", method = RequestMethod.POST)
+    public String AdaugaProgres(@ModelAttribute(name="carte") Carte carte, Model model)
+    {
+
+       // System.out.println(carte.getAutor()+" ++ "+carte.getTitlu()+" ++ "+carte.getNrcitite());
+
+        if(cs.adaugaProgres(carte,carte.getNrcitite()))
+        {
+            return "home";
+        }
+
+
+        model.addAttribute("invalidData",true);
+        return "amCitit";
+    }
 
 
 
