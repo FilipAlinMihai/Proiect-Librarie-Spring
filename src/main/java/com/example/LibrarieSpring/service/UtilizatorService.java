@@ -36,4 +36,14 @@ public class UtilizatorService {
     {
         return ur.findById(id);
     }
+
+    public List<Utilizator> getAllutilizatori()
+    {
+        return ur.findAll();
+    }
+
+    public void stergeUtilizatorId(long id)
+    {
+        ur.deleteById1(id);
+    }
 }

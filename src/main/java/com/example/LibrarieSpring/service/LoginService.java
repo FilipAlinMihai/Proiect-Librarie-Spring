@@ -7,6 +7,9 @@ import com.example.LibrarieSpring.repository.UtilizatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Service
 public class LoginService {
 
@@ -36,6 +39,11 @@ public class LoginService {
         String parola1=signinForm.getParola1();
         String parola2=signinForm.getParola2();
 
+        String regex = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+
+        if(matcher.matches())
         if(parola2.compareTo(parola1)==0)
         {
             Utilizator u=us.getPrimulUtilizatorByEmail(email);

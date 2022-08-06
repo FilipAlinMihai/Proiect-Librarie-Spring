@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class LoginController {
 
-    public static Utilizator utilizatorul=new Utilizator();
+    private static Utilizator utilizatorul=new Utilizator();
+
+
     @Autowired
     UtilizatorService us;
 
@@ -66,4 +68,11 @@ public class LoginController {
         return "inregistrare";
     }
 
+    public static Utilizator getUtilizatorul() {
+        return utilizatorul;
+    }
+
+    public static void setUtilizatorul(Utilizator utilizatorul) {
+        LoginController.utilizatorul = utilizatorul;
+    }
 }

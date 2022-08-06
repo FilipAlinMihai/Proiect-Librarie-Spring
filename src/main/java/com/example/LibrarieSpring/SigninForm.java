@@ -10,6 +10,14 @@ public class SigninForm {
     public SigninForm()
     {}
 
+    public SigninForm(String email,String parola1,String parola2)
+    {
+        this.email=email;
+        this.parola1=parola1;
+        this.parola2=parola2;
+    }
+
+
     public String getEmail() {
         return email;
     }

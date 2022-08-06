@@ -26,9 +26,9 @@ public class ElementColectieService {
     public boolean aduagaElementColectie(ElementDeAdaugat elementDeAdaugat)
     {
 
-        Carte cartea1=cr.findFirstByAutorAndTitluAndUtilizator(elementDeAdaugat.getAutor(),elementDeAdaugat.getTitlu(), LoginController.utilizatorul);
+        Carte cartea1=cr.findFirstByAutorAndTitluAndUtilizator(elementDeAdaugat.getAutor(),elementDeAdaugat.getTitlu(), LoginController.getUtilizatorul());
 
-        Colectie colectie1=colr.findFirstByUtilizatorAndNume(LoginController.utilizatorul,elementDeAdaugat.getNume());
+        Colectie colectie1=colr.findFirstByUtilizatorAndNume(LoginController.getUtilizatorul(),elementDeAdaugat.getNume());
 
         if(cartea1!=null && colectie1!=null)
         {

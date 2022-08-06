@@ -53,7 +53,7 @@ public class AdaugaCarteController {
     @RequestMapping(value = "/afisareCarti", method = RequestMethod.GET)
     public String getPersoana(Model model)
     {
-        List<Carte> carti=cs.cautaCarteUtilizator(LoginController.utilizatorul);
+        List<Carte> carti=cs.cautaCarteUtilizator(LoginController.getUtilizatorul());
         model.addAttribute("numeatribut","Cartile dumneavoastra");
 
         model.addAttribute("carti", carti);

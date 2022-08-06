@@ -43,4 +43,12 @@ public class Utilizator {
     {
         return "Utilizatorul cu adresa "+email+" si parola "+parola;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

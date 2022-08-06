@@ -44,4 +44,12 @@ public class Colectie {
     public void setUtilizator(Utilizator utilizator) {
         this.utilizator = utilizator;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

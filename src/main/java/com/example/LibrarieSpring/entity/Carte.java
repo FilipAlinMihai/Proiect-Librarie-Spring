@@ -3,6 +3,8 @@ package com.example.LibrarieSpring.entity;
 import javax.persistence.*;
 
 @Entity
+@NamedQuery(name = "Carte.cautaDupaId", query = "SELECT p from Carte p where p.id = :id")
+@NamedQuery(name = "Carte.stergeDupaId",query ="delete from Carte t where t.id = :id")
 public class Carte {
 
     @Id

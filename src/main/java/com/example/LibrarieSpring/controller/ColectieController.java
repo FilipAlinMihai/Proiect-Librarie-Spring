@@ -58,7 +58,7 @@ public class ColectieController {
     @RequestMapping(value = "/afisareColectii", method = RequestMethod.GET)
     public String afisareColectii(Model model)
     {
-        List<Colectie> colectii=cr.findByUtilizator(LoginController.utilizatorul);
+        List<Colectie> colectii=cr.findByUtilizator(LoginController.getUtilizatorul());
         model.addAttribute("numeatribut","Colectiile dumneavoastra");
 
         model.addAttribute("colectii", colectii);
@@ -76,12 +76,12 @@ public class ColectieController {
     public String AlegeColectie(@ModelAttribute(name="colectie") Colectie colectie, Model model)
     {
 
-        Colectie colecteDeAfisat= new Colectie(colectie.getNume(),LoginController.utilizatorul);
+        Colectie colecteDeAfisat= new Colectie(colectie.getNume(),LoginController.getUtilizatorul());
 
 
-        if(cr.findByUtilizatorAndNume(LoginController.utilizatorul,colecteDeAfisat.getNume()).size()==1)
+        if(cr.findByUtilizatorAndNume(LoginController.getUtilizatorul(),colecteDeAfisat.getNume()).size()==1)
         {
-            List<Colectie> colectiile =cr.findByUtilizatorAndNume(LoginController.utilizatorul,colecteDeAfisat.getNume());
+            List<Colectie> colectiile =cr.findByUtilizatorAndNume(LoginController.getUtilizatorul(),colecteDeAfisat.getNume());
             List<ElementColectie> elementeColectie=ecr.findByColectie(colectiile.get(0));
             model.addAttribute("numeatribut","Carti");
 
