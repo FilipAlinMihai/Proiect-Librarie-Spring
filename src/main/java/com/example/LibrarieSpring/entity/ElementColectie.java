@@ -45,4 +45,12 @@ public class ElementColectie {
     public void setColectie(Colectie colectie) {
         this.colectie = colectie;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

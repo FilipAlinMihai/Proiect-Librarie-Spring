@@ -4,7 +4,7 @@ import com.example.LibrarieSpring.entity.Utilizator;
 import com.example.LibrarieSpring.service.CarteService;
 import com.example.LibrarieSpring.service.LoginService;
 import com.example.LibrarieSpring.service.UtilizatorService;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -15,7 +15,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TesteLoginService {
     @Autowired
     private CarteService cs;
@@ -26,9 +26,16 @@ public class TesteLoginService {
     @Autowired
     private LoginService ls;
 
-
+    @Test
+    @Order(1)
+    public void aduagaDate()
+    {
+        Utilizator utilizator=new Utilizator("admin@gmail.com","admin");
+        us.adauaga(utilizator);
+    }
     @Test
     @Transactional
+    @Order(2)
     public void loginEsuat()
     {
         LoginForm loginForm=new LoginForm("aaaaaaaa","bbbbb");
@@ -39,6 +46,7 @@ public class TesteLoginService {
 
     @Test
     @Transactional
+    @Order(3)
     public void loginReusit()
     {
         List<Utilizator> utilizatori=us.getAllutilizatori();
@@ -51,6 +59,7 @@ public class TesteLoginService {
 
     @Test
     @Transactional
+    @Order(4)
     public void inregistraerEsuata()
     {
         List<Utilizator> utilizatori=us.getAllutilizatori();
@@ -63,6 +72,7 @@ public class TesteLoginService {
 
     @Test
     @Transactional
+    @Order(5)
     public void inregistraerReusita()
     {
         List<Utilizator> utilizatori=us.getAllutilizatori();
@@ -81,6 +91,7 @@ public class TesteLoginService {
 
     @Test
     @Transactional
+    @Order(6)
     public void inregistraerEmilInvalid()
     {
 
@@ -96,6 +107,13 @@ public class TesteLoginService {
         assertThat(reusit3).isFalse();
     }
 
-
+    @Test
+    @Order(7)
+    @Transactional
+    public void stergeDate()
+    {
+        Utilizator utilizator=us.getPrimulUtilizatorByEmail("admin@gmail.com");
+        us.stergeUtilizatorId(utilizator.getId());
+    }
 
 }

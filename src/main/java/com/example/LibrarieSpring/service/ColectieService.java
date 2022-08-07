@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ColectieService {
@@ -42,6 +43,11 @@ public class ColectieService {
     public void stergeColectieById(long id)
     {
         cr.deleteById1(id);
+    }
+
+    public Optional<Colectie> cautaColectieDupaId(long id)
+    {
+        return cr.findById(id);
     }
 
 }

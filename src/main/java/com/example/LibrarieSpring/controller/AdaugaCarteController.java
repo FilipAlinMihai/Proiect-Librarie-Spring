@@ -1,6 +1,7 @@
 package com.example.LibrarieSpring.controller;
 
 import com.example.LibrarieSpring.entity.Carte;
+import com.example.LibrarieSpring.entity.Utilizator;
 import com.example.LibrarieSpring.repository.CarteRepository;
 import com.example.LibrarieSpring.service.CarteService;
 import com.example.LibrarieSpring.service.UtilizatorService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,6 +65,7 @@ public class AdaugaCarteController {
     @RequestMapping(value = "/amCitit", method = RequestMethod.GET)
     public String getAdaugaProgres()
     {
+
         return "amCitit";
     }
 
@@ -79,6 +82,7 @@ public class AdaugaCarteController {
 
 
         model.addAttribute("invalidData",true);
+        model.addAttribute("procent",carte.getProcent());
         return "amCitit";
     }
 

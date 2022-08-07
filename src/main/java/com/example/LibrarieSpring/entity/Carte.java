@@ -116,4 +116,16 @@ public class Carte {
     {
         return "Cartea "+titlu+" scrisa de "+autor+" areun total de "+nrpagini+" pagini. Seafla in colectia lui "+utilizator.toString();
     }
+
+    public String getProcent()
+    {
+        String proc="";
+
+
+        double pr=((double)this.nrcitite/this.nrpagini)*100;
+        proc=String.format("%.3f",pr);
+        proc=proc+"%";
+
+        return proc;
+    }
 }

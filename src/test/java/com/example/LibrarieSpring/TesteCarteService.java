@@ -5,7 +5,7 @@ import com.example.LibrarieSpring.entity.Carte;
 import com.example.LibrarieSpring.entity.Utilizator;
 import com.example.LibrarieSpring.service.CarteService;
 import com.example.LibrarieSpring.service.UtilizatorService;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TesteCarteService {
 
     @Autowired
@@ -26,14 +27,26 @@ public class TesteCarteService {
     private UtilizatorService us;
 
     @Test
+    @Order(1)
+    public void aduagaDate()
+    {
+        Utilizator utilizator=new Utilizator("admin@gmail.com","admin");
+        us.adauaga(utilizator);
+        LoginController.setUtilizatorul(utilizator);
+        Carte carte=new Carte("Titlu","Autor",357);
+        cs.adaugaCarte(carte);
+    }
+
+    @Test
     @Transactional
+    @Order(2)
     void adaugaCarte() {
 
         List<Carte> carti=cs.getAllBooks();
         int i=carti.size();
         i++;
         int l=0;
-        Utilizator utilizator=us.getUtilizatorById(14);
+        Utilizator utilizator=us.getAllUtilizatori().get(0);
         LoginController.setUtilizatorul(utilizator);
         Carte carteDeAdaugat=new Carte("Mos Goriot","Honore de Balzac",357);
         boolean adaugare=cs.adaugaCarte(carteDeAdaugat);
@@ -54,25 +67,29 @@ public class TesteCarteService {
 
     @Test
     @Transactional
+    @Order(3)
     void CautaDupaId() {
 
-        Carte cartea =cs.getCarteById(2);
+        Carte cartea =cs.getAllBooks().get(0);
+        Carte cartea1 =cs.getCarteById(cartea.getId());
 
         assertThat(cartea).isNotNull();
-        assertThat(cartea.getTitlu()).isEqualTo("Ferma animalelor");
-        assertThat(cartea.getAutor()).isEqualTo("George Orwell");
+        assertThat(cartea.getTitlu()).isEqualTo(cartea1.getTitlu());
+        assertThat(cartea.getAutor()).isEqualTo(cartea1.getAutor());
 
     }
 
 
     @Test
     @Transactional
+    @Order(4)
     void aduagaProgres() {
 
-        Carte cartea =cs.getCarteById(8);
+        Carte cartea =cs.getAllBooks().get(0);
 
-        LoginController.setUtilizatorul(us.getUtilizatorById(7));
+        LoginController.setUtilizatorul(cartea.getUtilizator());
         int i= cartea.getNrcitite();
+        if(i< cartea.getNrpagini())
         i++;
         boolean reusit=cs.adaugaProgres(cartea,1);
         int l=cartea.getNrcitite();
@@ -84,6 +101,7 @@ public class TesteCarteService {
 
     @Test
     @Transactional
+    @Order(5)
     void getAllBooks() {
 
         Carte cartea=new Carte("Mos Goriot","Honore de Balzac",357);
@@ -109,6 +127,7 @@ public class TesteCarteService {
 
     @Test
     @Transactional
+    @Order(6)
     void getBookById() {
 
         List<Carte> carti=cs.getAllBooks();
@@ -125,6 +144,7 @@ public class TesteCarteService {
 
     @Test
     @Transactional
+    @Order(7)
     void adaugaCarteDublu() {
 
 
@@ -142,6 +162,7 @@ public class TesteCarteService {
 
     @Test
     @Transactional
+    @Order(8)
     void getBookByTitluUtilizator() {
 
         List<Carte> carti=cs.getAllBooks();
@@ -157,10 +178,12 @@ public class TesteCarteService {
     }
 
     @Test
+    @Order(9)
     void aduagaProgresPreaMare() {
 
         List<Carte> carti=cs.getAllBooks();
         Carte cartea=carti.get(0);
+        int initial=cartea.getNrcitite();
 
         LoginController.setUtilizatorul(us.getUtilizatorById(carti.get(0).getUtilizator().getId()));
         boolean reusit=cs.adaugaProgres(cartea,1000);
@@ -169,10 +192,21 @@ public class TesteCarteService {
         Carte cartea2=carti.get(0);
         int l=cartea2.getNrcitite();
 
-
+        cs.modificaPaginiCitite(cartea,initial);
         assertThat(cartea).isNotNull();
         assertThat(reusit).isTrue();
         assertThat(cartea.getNrpagini()).isEqualTo(l);
     }
 
+    @Test
+    @Order(10)
+    @Transactional
+    public void stergeDate()
+    {
+        Utilizator utilizator=us.getPrimulUtilizatorByEmail("admin@gmail.com");
+        us.stergeUtilizatorId(utilizator.getId());
+        LoginController.setUtilizatorul(utilizator);
+        Carte carte=cs.getByTitluUtilizator("Titlu",LoginController.getUtilizatorul());
+        cs.deleteByID(carte.getId());
+    }
 }

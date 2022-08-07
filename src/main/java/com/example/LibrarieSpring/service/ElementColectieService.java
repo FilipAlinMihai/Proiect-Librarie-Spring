@@ -42,4 +42,19 @@ public class ElementColectieService {
         }
         return false;
     }
+
+    public List<ElementColectie>  toateElementele()
+    {
+        return ecr.findAll();
+    }
+
+    public ElementColectie cautaElementByCarteColectie(Carte carte, Colectie colectie)
+    {
+        return  ecr.findFirstByCarteAndColectie(carte,colectie);
+    }
+
+    public void  stergeElementColectie(long id)
+    {
+        ecr.deleteById1(id);
+    }
 }

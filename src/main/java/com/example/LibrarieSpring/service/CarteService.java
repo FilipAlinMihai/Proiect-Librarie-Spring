@@ -2,6 +2,7 @@ package com.example.LibrarieSpring.service;
 
 import com.example.LibrarieSpring.controller.LoginController;
 import com.example.LibrarieSpring.entity.Carte;
+import com.example.LibrarieSpring.entity.Provocare;
 import com.example.LibrarieSpring.entity.Utilizator;
 import com.example.LibrarieSpring.repository.CarteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,10 @@ import java.util.Optional;
 public class CarteService {
 
     @Autowired
-    CarteRepository cr;
+    private CarteRepository cr;
+
+    @Autowired
+    private ProvocareService ps;
 
     public boolean adaugaCarte(Carte addBook)
     {
@@ -68,16 +72,17 @@ public class CarteService {
     public boolean adaugaProgres(Carte carte,int pagini)
     {
         List<Carte> carti=cr.findByAutorAndTitluAndUtilizator(carte.getAutor(),carte.getTitlu(), LoginController.getUtilizatorul());
-        if(carti.size()==1)
-        {
-            Carte cartea =cr.findFirstByAutorAndTitluAndUtilizator(carte.getAutor(),carte.getTitlu(), LoginController.getUtilizatorul());
-            if((cartea.getNrcitite()+pagini)>cartea.getNrpagini())
-            {
+        if(carti.size()==1) {
+            Carte cartea = cr.findFirstByAutorAndTitluAndUtilizator(carte.getAutor(), carte.getTitlu(), LoginController.getUtilizatorul());
+            if ((cartea.getNrcitite() + pagini) > cartea.getNrpagini()) {
                 cartea.setNrcitite(cartea.getNrpagini());
+            } else {
+                cartea.setNrcitite(cartea.getNrcitite() + pagini);
             }
-            else
+            List<Provocare> provocari = ps.cautaProvocarileUnuiUtilizator(LoginController.getUtilizatorul());
+            for (Provocare p : provocari)
             {
-                cartea.setNrcitite(cartea.getNrcitite()+pagini);
+                p.adaugaProgres(pagini);
             }
             cr.save(cartea);
             return true;
@@ -103,6 +108,18 @@ public class CarteService {
     public void stergeDupaTitluUtilizator(String titlu,Utilizator utilizator)
     {
         cr.deleteByTitluAndUtilizator(titlu,utilizator);
+    }
+
+    public void modificaPaginiCitite(Carte carte,int pagini)
+    {
+        carte.setNrcitite(pagini);
+        cr.save(carte);
+    }
+
+
+    public String getProcent(Carte carte)
+    {
+        return carte.getProcent();
     }
 
 }
