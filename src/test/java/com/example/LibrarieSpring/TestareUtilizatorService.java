@@ -26,9 +26,25 @@ public class TestareUtilizatorService {
         Utilizator utilizator=new Utilizator("admin@gmail.com","admin");
         us.adauaga(utilizator);
     }
+
+    @Test
+    @Order(2)
+    public void testareUtilizator()
+    {
+        Utilizator utilizator= new Utilizator("email@gmail.com","parola");
+
+        assertThat(utilizator.getParola()).isEqualTo("parola");
+        assertThat(utilizator.getEmail()).isEqualTo("email@gmail.com");
+
+        utilizator.setParola("Parola23");
+
+        assertThat(utilizator.getParola()).isEqualTo("Parola23");
+    }
+
+
     @Test
     @Transactional
-    @Order(2)
+    @Order(3)
     public void adaugautilizatorBun()
     {
         int i=us.getAllutilizatori().size()+1;
@@ -46,7 +62,7 @@ public class TestareUtilizatorService {
 
     @Test
     @Transactional
-    @Order(3)
+    @Order(4)
     public void adaugautilizatorEsec()
     {
         int i=us.getAllutilizatori().size()+1;
@@ -66,7 +82,7 @@ public class TestareUtilizatorService {
 
     @Test
     @Transactional
-    @Order(4)
+    @Order(5)
     public void cautaDupaEmail()
     {
         List<Utilizator> utilizatori=us.getAllUtilizatori();
@@ -81,7 +97,7 @@ public class TestareUtilizatorService {
 
     @Test
     @Transactional
-    @Order(5)
+    @Order(6)
     public void cautaDupaId()
     {
         List<Utilizator> utilizatori=us.getAllUtilizatori();
@@ -95,7 +111,7 @@ public class TestareUtilizatorService {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     @Transactional
     public void stergeDate()
     {

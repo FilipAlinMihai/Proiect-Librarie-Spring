@@ -43,7 +43,6 @@ public class Carte {
         titlu=t;
         autor=a;
         nrcitite=citite;
-        nrcitite=0;
     }
 
     public Carte(String t,String a,int nr,Utilizator utilizator)

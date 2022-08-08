@@ -44,8 +44,28 @@ public class ProvocareServiceTest {
     }
 
     @Test
-    @Transactional
     @Order(2)
+    public void testProvocare()
+    {
+        Provocare provocare=new Provocare(100,10,"De citit");
+
+        assertThat(provocare.getNume()).isEqualTo("De citit");
+        assertThat(provocare.getPagini()).isEqualTo(100);
+        assertThat(provocare.getZile()).isEqualTo(10);
+
+        provocare.setNume("De citit 2");
+        provocare.setPagini(200);
+        provocare.setZile(20);
+
+        assertThat(provocare.getNume()).isEqualTo("De citit 2");
+        assertThat(provocare.getPagini()).isEqualTo(200);
+        assertThat(provocare.getZile()).isEqualTo(20);
+    }
+
+
+    @Test
+    @Transactional
+    @Order(3)
     public void adaugaProvocare()
     {
         int i=ps.cautaToateProvocarile().size()+1;
@@ -69,7 +89,7 @@ public class ProvocareServiceTest {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     @Transactional
     public void adaugaProvocareEsec()
     {
@@ -84,7 +104,7 @@ public class ProvocareServiceTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     @Transactional
     public void verificareSituatieProvocare()
     {
@@ -114,7 +134,7 @@ public class ProvocareServiceTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     @Transactional
     public void stergeDate()
     {

@@ -38,15 +38,32 @@ public class TestElementColectieService {
         us.adauaga(utilizator);
         LoginController.setUtilizatorul(utilizator);
         Carte carte=new Carte("Titlu","Autor",357);
-        cs.adaugaCarte(carte);
+        boolean reusit=cs.adaugaCarte(carte);
         Colectie colectie=new Colectie("colectieAdmin",LoginController.getUtilizatorul());
-        cols.adaugaColectie(colectie);
+        boolean reusit1=cols.adaugaColectie(colectie);
+
+        assertThat(reusit).isTrue();
+        assertThat(reusit1).isTrue();
+    }
+
+    @Test
+    @Order(2)
+    public void testElementColectie()
+    {
+        Colectie colectie =new Colectie("Preferate");
+        Carte carte =new Carte("Titlu","Autor",100);
+        ElementColectie elementColectie=new ElementColectie(carte,colectie);
+
+        assertThat(elementColectie.getColectie().getNume()).isEqualTo("Preferate");
+        assertThat(elementColectie.getCarte().getTitlu()).isEqualTo("Titlu");
+        assertThat(elementColectie.getCarte().getAutor()).isEqualTo("Autor");
+        assertThat(elementColectie.getCarte().getNrpagini()).isEqualTo(100);
 
     }
 
     @Test
     @Transactional
-    @Order(2)
+    @Order(3)
     public void AdaugaElementColectie()
     {
         List<Colectie> colectii=cols.getColectii();
@@ -76,7 +93,7 @@ public class TestElementColectieService {
 
     @Test
     @Transactional
-    @Order(3)
+    @Order(4)
     public void EsecAdaugare()
     {
         List<Colectie> colectii=cols.getColectii();
@@ -96,7 +113,7 @@ public class TestElementColectieService {
 
     @Test
     @Transactional
-    @Order(4)
+    @Order(5)
     public void EsecAdaugare2()
     {
         List<Colectie> colectii=cols.getColectii();
@@ -119,7 +136,7 @@ public class TestElementColectieService {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     @Transactional
     public  void stergeDate()
     {

@@ -48,6 +48,11 @@ public class ProvocareService {
         return pr.findByUtilizator(utilizator);
     }
 
+    public void stergeProvocare(Provocare provocare)
+    {
+        pr.deleteById1(provocare.getId());
+    }
+
     public String situatieProvocare(Provocare provocare)
     {
 

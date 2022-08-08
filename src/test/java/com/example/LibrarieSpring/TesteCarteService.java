@@ -34,12 +34,45 @@ public class TesteCarteService {
         us.adauaga(utilizator);
         LoginController.setUtilizatorul(utilizator);
         Carte carte=new Carte("Titlu","Autor",357);
-        cs.adaugaCarte(carte);
+        boolean reusit =cs.adaugaCarte(carte);
+
+        assertThat(reusit).isTrue();
+    }
+
+    @Test
+    @Order(2)
+    public void testCarte()
+    {
+        Carte carte =new Carte("Titlu","Autor",100);
+
+        assertThat(carte.getNrpagini()).isEqualTo(100);
+        assertThat(carte.getTitlu()).isEqualTo("Titlu");
+        assertThat(carte.getAutor()).isEqualTo("Autor");
+
+        carte.setAutor("Autorul");
+        carte.setTitlu("Titlul");
+        carte.setNrpagini(200);
+
+        assertThat(carte.getNrpagini()).isEqualTo(200);
+        assertThat(carte.getTitlu()).isEqualTo("Titlul");
+        assertThat(carte.getAutor()).isEqualTo("Autorul");
+
+        carte.setNrpagini(100);
+
+        assertThat(carte.getProcent()).isEqualTo("0.000%");
+        carte.setNrcitite(33);
+        assertThat(carte.getProcent()).isEqualTo("33.000%");
+        carte.setNrcitite(100);
+        assertThat(carte.getProcent()).isEqualTo("100.000%");
+        carte.setNrcitite(47);
+        assertThat(carte.getProcent()).isEqualTo("47.000%");
+
+
     }
 
     @Test
     @Transactional
-    @Order(2)
+    @Order(3)
     void adaugaCarte() {
 
         List<Carte> carti=cs.getAllBooks();
@@ -61,24 +94,7 @@ public class TesteCarteService {
         assertTrue(adaugare);
         assertEquals(l,i);
 
-
-
     }
-
-    @Test
-    @Transactional
-    @Order(3)
-    void CautaDupaId() {
-
-        Carte cartea =cs.getAllBooks().get(0);
-        Carte cartea1 =cs.getCarteById(cartea.getId());
-
-        assertThat(cartea).isNotNull();
-        assertThat(cartea.getTitlu()).isEqualTo(cartea1.getTitlu());
-        assertThat(cartea.getAutor()).isEqualTo(cartea1.getAutor());
-
-    }
-
 
     @Test
     @Transactional

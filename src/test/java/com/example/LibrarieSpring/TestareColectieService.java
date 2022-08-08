@@ -37,11 +37,27 @@ public class TestareColectieService {
         us.adauaga(utilizator);
         LoginController.setUtilizatorul(utilizator);
         Carte carte=new Carte("Titlu","Autor",357);
-        cs.adaugaCarte(carte);
+       boolean reusit= cs.adaugaCarte(carte);
+       assertThat(reusit).isTrue();
     }
+
+    @Test
+    @Order(2)
+    public void testColectie()
+    {
+        Colectie colectie =new Colectie("Preferate");
+
+        assertThat(colectie.getNume()).isEqualTo("Preferate");
+
+        colectie.setNume("Istorie");
+        assertThat(colectie.getNume()).isEqualTo("Istorie");
+
+    }
+
+
     @Test
     @Transactional
-    @Order(2)
+    @Order(3)
     public void colectieBuna()
     {
         List<Utilizator> utilizatori=us.getAllutilizatori();
@@ -72,7 +88,7 @@ public class TestareColectieService {
 
     @Test
     @Transactional
-    @Order(3)
+    @Order(4)
     public void colectieEsec()
     {
         List<Utilizator> utilizatori=us.getAllutilizatori();
@@ -92,7 +108,7 @@ public class TestareColectieService {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     @Transactional
     public void stergeDate()
     {
