@@ -21,7 +21,7 @@ public class CarteController {
     @Autowired
     CarteRepository cr;
 
-    @RequestMapping(value = "/arataCarte" , method= RequestMethod.GET)
+    @RequestMapping(value = "/arataCarti" , method= RequestMethod.GET)
     public List<Carte> afisareToateCartile() {
         return cs.getAllBooks();
 
@@ -29,7 +29,11 @@ public class CarteController {
 
     @RequestMapping(value = "/afisareCaretId/{id}" , method=RequestMethod.GET)
     public Carte afisareCarteDupaId(@PathVariable long id) {
-        return cs.getCarteById(id);
+
+       Carte cartea= cs.getCarteById(id);
+       if(cartea!=null)
+        return cartea;
+       else return new Carte("Cartea cu aces ID NU exista");
     }
 
     @GetMapping(value = "/adaugareFaraFormular/{titlu}/{autor}/{pagini}/{id}" )
@@ -47,8 +51,11 @@ public class CarteController {
     @RequestMapping(value = "/arataProcentCarte/{id}" , method= RequestMethod.GET)
     public String afisareProcentCarte(@PathVariable("id") long id) {
             Carte carte=cs.getCarteById(id);
-            String s=carte.getTitlu()+" citita in procent de "+carte.getProcent();
-            return s;
+            if(carte!=null) {
+                String s = "Cartea " + carte.getTitlu() + " este citita in procent de " + carte.getProcent();
+                return s;
+            }
+            else return "Cartea nu a fost gasita";
     }
 
 

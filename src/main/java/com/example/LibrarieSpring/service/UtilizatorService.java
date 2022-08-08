@@ -1,6 +1,10 @@
 package com.example.LibrarieSpring.service;
 
+import com.example.LibrarieSpring.entity.Carte;
+import com.example.LibrarieSpring.entity.Colectie;
 import com.example.LibrarieSpring.entity.Utilizator;
+import com.example.LibrarieSpring.repository.CarteRepository;
+import com.example.LibrarieSpring.repository.ColectieRepository;
 import com.example.LibrarieSpring.repository.UtilizatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +15,13 @@ import java.util.List;
 public class UtilizatorService {
 
     @Autowired
-    UtilizatorRepository ur;
+    private UtilizatorRepository ur;
+
+    @Autowired
+    private CarteRepository cr;
+
+    @Autowired
+    private ColectieRepository colr;
 
     public void adauaga(Utilizator utilizator)
     {
@@ -45,5 +55,28 @@ public class UtilizatorService {
     public void stergeUtilizatorId(long id)
     {
         ur.deleteById1(id);
+    }
+
+
+    public String procesareDateUtilizator(Utilizator utilizator)
+    {
+        String s="";
+        List<Carte> cartiUtilizator= cr.findByUtilizator(utilizator);
+        List<Colectie> colectiiUtilizator=colr.findByUtilizator(utilizator);
+        int numarCarti=cartiUtilizator.size();
+        int numarColectii=colectiiUtilizator.size();
+        int numarpagini=0;
+        int totalpagini=0;
+        for(Carte c:cartiUtilizator)
+        {
+            numarpagini=numarpagini+c.getNrcitite();
+            totalpagini=totalpagini+c.getNrpagini();
+        }
+
+        s=String.format("Utilizatorul cu adresa de email %s are :<br> " +
+                " **** Un total de %d carti <br>  ****  El a citit %d pagini dintrun total de %d pagini <br> " +
+                " **** Are %d colectii !",utilizator.getEmail(),numarCarti,numarpagini,totalpagini,numarColectii);
+
+        return s;
     }
 }

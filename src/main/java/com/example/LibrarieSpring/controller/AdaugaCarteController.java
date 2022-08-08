@@ -18,18 +18,11 @@ import java.util.Optional;
 public class AdaugaCarteController {
 
     @Autowired
-    UtilizatorService us;
-
-    @Autowired
-    CarteService cs;
-
-    @Autowired
-    CarteRepository cr;
+    private CarteService cs;
 
     @RequestMapping(value = "/adaugaCarte", method = RequestMethod.GET)
     public String getAddBookForm()
     {
-
         return "adaugaCarte";
     }
 
@@ -65,21 +58,16 @@ public class AdaugaCarteController {
     @RequestMapping(value = "/amCitit", method = RequestMethod.GET)
     public String getAdaugaProgres()
     {
-
         return "amCitit";
     }
 
     @RequestMapping(value = "/amCitit", method = RequestMethod.POST)
     public String AdaugaProgres(@ModelAttribute(name="carte") Carte carte, Model model)
     {
-
-       // System.out.println(carte.getAutor()+" ++ "+carte.getTitlu()+" ++ "+carte.getNrcitite());
-
         if(cs.adaugaProgres(carte,carte.getNrcitite()))
         {
             return "home";
         }
-
 
         model.addAttribute("invalidData",true);
         model.addAttribute("procent",carte.getProcent());

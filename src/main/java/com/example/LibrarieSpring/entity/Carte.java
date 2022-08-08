@@ -25,6 +25,11 @@ public class Carte {
 
     }
 
+    public Carte(String nume)
+    {
+        this.titlu =nume;
+    }
+
     public Carte(String t,String a,int nr)
     {
         titlu=t;

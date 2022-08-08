@@ -64,4 +64,17 @@ public class UtilizatorController {
             return "Utilizator nu a fost adaugat";
     }
 
+    @GetMapping("/afisareStstistici/{id}")
+    public String vizualizareStatistici(@PathVariable("id") long id) {
+
+        Utilizator utilizator =utilizatorService.getUtilizatorById(id);
+
+        if(utilizator!=null)
+        {
+           return utilizatorService.procesareDateUtilizator(utilizator);
+        }
+
+        return "Utilizatorul Nu a fost Gasit";
+    }
+
 }

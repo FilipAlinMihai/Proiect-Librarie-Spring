@@ -49,7 +49,7 @@ public class ColectieController2 {
     public String inserareColectie(@PathVariable("id") long id,@PathVariable("nume") String nume) {
         Utilizator utilizator=us.getUtilizatorById(id);
         if(utilizator==null)
-            return "Colectia NU a fost adaugata";
+            return "Colectia NU a fost adaugata. Utilizatorul nu a fost gasit!";
         LoginController.setUtilizatorul(utilizator);
         if(cs.adaugaColectie(new Colectie(nume)))
             return "Colectia a fost adaugata";
