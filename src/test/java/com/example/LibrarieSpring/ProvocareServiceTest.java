@@ -39,7 +39,8 @@ public class ProvocareServiceTest {
     public void aduagaDate()
     {
         Utilizator utilizator=new Utilizator("admin@gmail.com","admin");
-        us.adauaga(utilizator);
+        boolean reusit= ls.inregistrare(new SigninForm("admin@gmail.com","admin","admin"));
+        assertThat(reusit).isTrue();
     }
 
     @Test
@@ -84,6 +85,36 @@ public class ProvocareServiceTest {
 
     @Test
     @Order(4)
+    @Transactional
+    public void verificareSituatieProvocare()
+    {
+        Utilizator utilizator=us.getPrimulUtilizatorByEmail("admin@gmail.com");
+        Provocare p1 =new Provocare(100,0,utilizator,"Provocare1");
+        Provocare p2 =new Provocare(0,100,utilizator,"Provocare2");
+        Provocare p3 =new Provocare(100,100,utilizator,"Provocare3");
+        ps.adauga(p1);
+        ps.adauga(p2);
+        ps.adauga(p3);
+
+        List<Provocare> provocari=ps.cautaProvocarileUnuiUtilizator(utilizator);
+        for(Provocare p:provocari)
+        {
+            if(p.getNume().compareTo("Provocare1")==0)
+                assertThat(ps.situatieProvocare(p)).isEqualTo("Termenul limita a expirat!");
+            else
+            if(p.getNume().compareTo("Provocare2")==0)
+                assertThat(ps.situatieProvocare(p)).isEqualTo("Provocare indeplinita. Felicitari!");
+            else
+            if(p.getNume().compareTo("Provocare3")==0)
+                assertThat(ps.situatieProvocare(p)).isEqualTo("Mai ai de citit "+(p.getPagini()- p.getProgres())+" pagini pana in data de "+p.getDataFinal());
+
+            ps.stergeDupaId(p);
+        }
+
+    }
+
+    @Test
+    @Order(5)
     @Transactional
     public void stergeDate()
     {

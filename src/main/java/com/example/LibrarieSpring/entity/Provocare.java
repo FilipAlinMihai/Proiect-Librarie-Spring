@@ -96,6 +96,15 @@ public class Provocare {
         this.utilizator = utilizator;
     }
 
+
+    public String getNume() {
+        return nume;
+    }
+
+    public void setNume(String nume) {
+        this.nume = nume;
+    }
+
     public Date getDataFinal()
     {
         Calendar c = Calendar.getInstance();
