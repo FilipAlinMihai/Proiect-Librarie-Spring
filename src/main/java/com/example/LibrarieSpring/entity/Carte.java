@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @NamedQuery(name = "Carte.cautaDupaId", query = "SELECT p from Carte p where p.id = :id")
 @NamedQuery(name = "Carte.stergeDupaId",query ="delete from Carte t where t.id = :id")
+@NamedQuery(name = "Carte.cartiFinalizate",query ="select t from Carte t where t.nrcitite = t.nrpagini and t.utilizator= :utilizator")
 public class Carte {
 
     @Id

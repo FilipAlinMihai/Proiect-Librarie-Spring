@@ -63,4 +63,17 @@ public class ProvocareController {
         else return "Provocarea nu a fost gasita!";
     }
 
+    @PostMapping("/modificareNumeProvocare/{id}/{nume}")
+    public String modificareNume(@PathVariable("id") long id,@PathVariable("nume") String nume)
+    {
+        Optional<Provocare> provocare=ps.cautaProvocareDupaId(id);
+
+        if(provocare.isPresent())
+        {
+            ps.modificaNume(provocare.get(),nume);
+            return "Modificare efectuata!";
+        }
+        return "Provocarea nu a fost gasita!";
+    }
+
 }

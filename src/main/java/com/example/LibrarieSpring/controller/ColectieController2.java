@@ -2,16 +2,14 @@ package com.example.LibrarieSpring.controller;
 
 import com.example.LibrarieSpring.entity.Carte;
 import com.example.LibrarieSpring.entity.Colectie;
+import com.example.LibrarieSpring.entity.Provocare;
 import com.example.LibrarieSpring.entity.Utilizator;
 import com.example.LibrarieSpring.repository.CarteRepository;
 import com.example.LibrarieSpring.service.CarteService;
 import com.example.LibrarieSpring.service.ColectieService;
 import com.example.LibrarieSpring.service.UtilizatorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +52,19 @@ public class ColectieController2 {
         if(cs.adaugaColectie(new Colectie(nume)))
             return "Colectia a fost adaugata";
         return "Colectia NU a fost adaugata";
+    }
+
+    @PostMapping("/modificareNumeColectie/{id}/{nume}")
+    public String modificareNume(@PathVariable("id") long id,@PathVariable("nume") String nume)
+    {
+        Optional<Colectie> colectie=cs.cautaColectieDupaId(id);
+
+        if(colectie.isPresent())
+        {
+            cs.modificaNume(colectie.get(),nume);
+            return "Modificare efectuata!";
+        }
+        return "Provocarea nu a fost gasita!";
     }
 
 }

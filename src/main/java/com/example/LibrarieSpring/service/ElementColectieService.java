@@ -50,7 +50,10 @@ public class ElementColectieService {
 
     public ElementColectie cautaElementByCarteColectie(Carte carte, Colectie colectie)
     {
-        return  ecr.findFirstByCarteAndColectie(carte,colectie);
+        ElementColectie elementColectie=ecr.findFirstByCarteAndColectie(carte,colectie);
+        if(elementColectie!=null)
+            return  elementColectie;
+        else throw new RuntimeException("Nu am gasit un element cu acest date ");
     }
 
     public void  stergeElementColectie(long id)

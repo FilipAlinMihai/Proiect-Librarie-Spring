@@ -164,7 +164,7 @@ public class TesteCarteService {
     void adaugaCarteDublu() {
 
 
-        Utilizator utilizator=us.getUtilizatorById(14);
+        Utilizator utilizator=us.getAllutilizatori().get(0);
         LoginController.setUtilizatorul(utilizator);
         Carte carteDeAdaugat=new Carte("Mos Goriot","Honore de Balzac",357);
         boolean adaugare=cs.adaugaCarte(carteDeAdaugat);
@@ -221,8 +221,5 @@ public class TesteCarteService {
     {
         Utilizator utilizator=us.getPrimulUtilizatorByEmail("admin@gmail.com");
         us.stergeUtilizatorId(utilizator.getId());
-        LoginController.setUtilizatorul(utilizator);
-        Carte carte=cs.getByTitluUtilizator("Titlu",LoginController.getUtilizatorul());
-        cs.deleteByID(carte.getId());
     }
 }

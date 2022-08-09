@@ -47,12 +47,16 @@ public class CarteService {
     public Optional<Carte> getBookById(long id)
     {
         Optional<Carte> cartea= cr.findById(id);
-        return cartea;
+        if(cartea.isPresent())
+            return cartea;
+        else throw new RuntimeException("Nu am gasit cartea cu acest id: " + id);
     }
 
     public Carte getCarteById(long id)
     {
-        return cr.cautaDupaId(id);
+        if(cr.cautaDupaId(id)!=null)
+            return cr.cautaDupaId(id);
+        else throw new RuntimeException("Nu am gasit cartea cu acest id: " + id);
     }
 
     public List<Carte> cautaCarteAutorTitluUtilizator(String autor, String titlu, Utilizator utilizator)
@@ -102,7 +106,9 @@ public class CarteService {
 
     public Carte getByTitluUtilizator(String titlu,Utilizator utilizator)
     {
-        return cr.findByTitluAndUtilizator(titlu,utilizator);
+        if(cr.findByTitluAndUtilizator(titlu,utilizator)!=null)
+             return cr.findByTitluAndUtilizator(titlu,utilizator);
+        else throw new RuntimeException("Nu am gasit cartea cu acest titlul: " + titlu+" si utilizatorul "+utilizator.getEmail());
     }
 
     public void stergeDupaTitluUtilizator(String titlu,Utilizator utilizator)
@@ -122,4 +128,26 @@ public class CarteService {
         return carte.getProcent();
     }
 
+
+    public void modificareTitlu(Carte carte,String titluNou)
+    {
+        carte.setTitlu(titluNou);
+        cr.save(carte);
+    }
+    public void modificareAutor(Carte carte,String autorNou)
+    {
+        carte.setAutor(autorNou);
+        cr.save(carte);
+    }
+    public void modificareNrPagini(Carte carte,int pagini)
+    {
+        carte.setNrpagini(pagini);
+        cr.save(carte);
+    }
+
+
+    public List<Carte> cautaCartiFinalizate(Utilizator utilizator)
+    {
+        return cr.cartiFinalizate(utilizator);
+    }
 }

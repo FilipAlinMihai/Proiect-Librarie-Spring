@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -106,17 +107,22 @@ public class TestareColectieService {
         assertThat(reusit1).isFalse();
 
     }
-
     @Test
     @Order(5)
+    public void testaruncaExceptie()
+    {
+        Utilizator utilizator=new Utilizator();
+        assertThrows(RuntimeException.class,()->colectieService.cautaColectieDupaId(1111111));
+        assertThrows(RuntimeException.class,()->colectieService.cautaColectieUtilizatorNume(utilizator,"Nume"));
+    }
+
+    @Test
+    @Order(6)
     @Transactional
     public void stergeDate()
     {
         Utilizator utilizator=us.getPrimulUtilizatorByEmail("admin@gmail.com");
         us.stergeUtilizatorId(utilizator.getId());
-        LoginController.setUtilizatorul(utilizator);
-        Carte carte=cs.getByTitluUtilizator("Titlu",LoginController.getUtilizatorul());
-        cs.deleteByID(carte.getId());
     }
 
 }

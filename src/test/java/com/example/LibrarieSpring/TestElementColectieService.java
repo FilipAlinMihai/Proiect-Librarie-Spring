@@ -143,9 +143,6 @@ public class TestElementColectieService {
         Utilizator utilizator=us.getPrimulUtilizatorByEmail("admin@gmail.com");
         us.stergeUtilizatorId(utilizator.getId());
         LoginController.setUtilizatorul(utilizator);
-        Carte carte=cs.getByTitluUtilizator("Titlu",LoginController.getUtilizatorul());
-        cs.deleteByID(carte.getId());
-        Colectie colectie=cols.cautaColectieUtilizatorNume(LoginController.getUtilizatorul(),"colectieAdmin");
-        cols.stergeColectieById(colectie.getId());
+
     }
 }

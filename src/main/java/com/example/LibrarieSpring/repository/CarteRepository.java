@@ -22,6 +22,8 @@ public interface CarteRepository extends JpaRepository<Carte,Long> {
     Carte cautaDupaId(@Param("id") long id);
     void stergeDupaId(@Param("id") long id);
 
+    List<Carte> cartiFinalizate(@Param("utilizator") Utilizator utilizator );
+
     Carte findByTitluAndUtilizator(String titlu,Utilizator utilizator);
     void deleteByTitluAndUtilizator(String titlu,Utilizator utilizator);
 

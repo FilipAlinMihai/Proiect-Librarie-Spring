@@ -40,7 +40,10 @@ public class ProvocareService {
 
     public Optional<Provocare> cautaProvocareDupaId(long id)
     {
-        return pr.findById(id);
+        Optional<Provocare> provocare=pr.findById(id);
+        if(provocare.isPresent())
+            return provocare;
+        else throw new RuntimeException("Nu am gasit provocarea cu acest id: " + id);
     }
 
     public List<Provocare> cautaProvocarileUnuiUtilizator(Utilizator utilizator)
@@ -62,6 +65,12 @@ public class ProvocareService {
             return "Mai ai de citit "+(provocare.getPagini()- provocare.getProgres())+" pagini pana in data de "+provocare.getDataFinal();
         else
             return "Termenul limita a expirat!";
+    }
+
+    public void modificaNume(Provocare provocare,String nume)
+    {
+        provocare.setNume(nume);
+        pr.save(provocare);
     }
 
 }

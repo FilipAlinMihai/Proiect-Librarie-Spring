@@ -1,6 +1,7 @@
 package com.example.LibrarieSpring.controller;
 
 import com.example.LibrarieSpring.entity.Carte;
+import com.example.LibrarieSpring.entity.Utilizator;
 import com.example.LibrarieSpring.repository.CarteRepository;
 import com.example.LibrarieSpring.service.CarteService;
 import com.example.LibrarieSpring.service.UtilizatorService;
@@ -30,13 +31,21 @@ public class CarteController {
     @RequestMapping(value = "/afisareCaretId/{id}" , method=RequestMethod.GET)
     public Carte afisareCarteDupaId(@PathVariable long id) {
 
-       Carte cartea= cs.getCarteById(id);
-       if(cartea!=null)
-        return cartea;
-       else return new Carte("Cartea cu aces ID NU exista");
+        try {
+            Carte cartea = cs.getCarteById(id);
+            if (cartea != null)
+                return cartea;
+        }catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return new Carte("Cartea cu aces ID NU exista");
+        }
+
+        return new Carte("Cartea cu aces ID NU exista");
     }
 
-    @GetMapping(value = "/adaugareFaraFormular/{titlu}/{autor}/{pagini}/{id}" )
+    @PostMapping(value = "/adaugareFaraFormular/{titlu}/{autor}/{pagini}/{id}" )
     public String aduagareFaraFormular(@PathVariable("titlu") String titlu,@PathVariable("autor") String autor,@PathVariable("pagini") int pagini,@PathVariable("id") long id) {
         Carte cartea=new Carte(titlu,autor,pagini);
         if(us.getUtilizatorById(id)==null)
@@ -50,13 +59,76 @@ public class CarteController {
     }
     @RequestMapping(value = "/arataProcentCarte/{id}" , method= RequestMethod.GET)
     public String afisareProcentCarte(@PathVariable("id") long id) {
-            Carte carte=cs.getCarteById(id);
-            if(carte!=null) {
+        try {
+            Carte carte = cs.getCarteById(id);
+            if (carte != null) {
                 String s = "Cartea " + carte.getTitlu() + " este citita in procent de " + carte.getProcent();
                 return s;
             }
-            else return "Cartea nu a fost gasita";
+        }catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Cartea nu a fost gasita";
+        }
+
+        return "Cartea nu a fost gasita";
+    }
+
+    @PostMapping("/modificareTitlu/{id}/{titluNou}")
+    public String modificareTitlu(@PathVariable("id") long id,@PathVariable("titluNou") String titluNou)
+    {
+        try {
+            Carte carte = cs.getCarteById(id);
+            if (carte != null) {
+
+                cs.modificareTitlu(carte, titluNou);
+                return "Modificari efectuate";
+            }
+        }catch(RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Cartea nu a fost gasita";
+        }
+
+        return "Cartea nu a fost gasita";
+    }
+
+    @PostMapping("/modificareAutor/{id}/{autorNou}")
+    public String modificareAutor(@PathVariable("id") long id,@PathVariable("autorNou") String autorNou)
+    {
+        Carte carte=cs.getCarteById(id);
+        if(carte!=null) {
+
+            cs.modificareAutor(carte,autorNou);
+            return "Modificari efectuate";
+        }
+        else return "Cartea nu a fost gasita";
+    }
+
+    @PostMapping("/modificareNrPagini/{id}/{pagini}")
+    public String modificareNrPagini(@PathVariable("id") long id,@PathVariable("pagini") int pagini)
+    {
+        Carte carte=cs.getCarteById(id);
+        if(carte!=null) {
+
+            cs.modificareNrPagini(carte,pagini);
+            return "Modificari efectuate";
+        }
+        else return "Cartea nu a fost gasita";
     }
 
 
+    @PostMapping("/modificareNrCitite/{id}/{pagini}")
+    public String modificareNrCitite(@PathVariable("id") long id,@PathVariable("pagini") int pagini)
+    {
+        Carte carte=cs.getCarteById(id);
+        if(carte!=null) {
+
+            cs.modificaPaginiCitite(carte,pagini);
+            return "Modificari efectuate";
+        }
+        else return "Cartea nu a fost gasita";
+    }
 }

@@ -32,7 +32,10 @@ public class ColectieService {
 
     public Colectie cautaColectieUtilizatorNume(Utilizator utilizator, String nume)
     {
-        return cr.findFirstByUtilizatorAndNume(utilizator,nume);
+        if(cr.findFirstByUtilizatorAndNume(utilizator,nume)!=null)
+            return cr.findFirstByUtilizatorAndNume(utilizator,nume);
+        else throw new RuntimeException("Nu am gasit colectia cu acest nume: " + nume+" si utilizator "+utilizator.getEmail());
+
     }
 
     public List<Colectie> getColectii()
@@ -47,7 +50,15 @@ public class ColectieService {
 
     public Optional<Colectie> cautaColectieDupaId(long id)
     {
-        return cr.findById(id);
+        Optional<Colectie> colectie=cr.findById(id);
+        if(colectie.isPresent())
+            return colectie;
+        else throw new RuntimeException("Nu am gasit colectia cu acest id: " + id);
     }
 
+    public void modificaNume(Colectie colectie,String nume)
+    {
+        colectie.setNume(nume);
+        cr.save(colectie);
+    }
 }

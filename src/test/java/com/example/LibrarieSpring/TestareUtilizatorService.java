@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -109,9 +110,14 @@ public class TestareUtilizatorService {
         assertThat(utilizatorGasit.getEmail()).isEqualTo(utilizator.getEmail());
         assertThat(utilizatorGasit.getParola()).isEqualTo(utilizator.getParola());
     }
-
     @Test
     @Order(7)
+    public void testExceptie()
+    {
+        assertThrows(RuntimeException.class,()->us.getUtilizatorById(1111111));
+    }
+    @Test
+    @Order(8)
     @Transactional
     public void stergeDate()
     {
