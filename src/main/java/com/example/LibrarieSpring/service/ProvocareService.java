@@ -73,4 +73,42 @@ public class ProvocareService {
         pr.save(provocare);
     }
 
+    public String  modificaZile(long id,int zile)
+    {
+        try {
+            Optional<Provocare> provocare = pr.findById(id);
+            if (provocare.isPresent()) {
+                provocare.get().setZile(zile);
+                pr.save(provocare.get());
+                return "Modificare efectuata";
+            }
+            return "Modificare esuata";
+        }
+        catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Modificare esuata";
+        }
+    }
+
+    public String modificaPagini(long id,int pagini)
+    {
+        try {
+            Optional<Provocare> provocare = pr.findById(id);
+            if(provocare.isPresent())
+            {
+            provocare.get().setPagini(pagini);
+            pr.save(provocare.get());
+            return "Modificare efectuata";
+            }
+            return "Modificare esuata";
+        }catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Modificare esuata";
+        }
+    }
+
 }

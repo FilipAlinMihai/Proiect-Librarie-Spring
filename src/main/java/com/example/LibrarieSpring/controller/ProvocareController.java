@@ -75,5 +75,16 @@ public class ProvocareController {
         }
         return "Provocarea nu a fost gasita!";
     }
+    @PostMapping("/modificaZileProvocare/{id}/{zile}")
+    public String modificaZileProvocare(@PathVariable("id") long id,@PathVariable("zile") int  zile)
+    {
+        return ps.modificaZile(id,zile);
+    }
+
+    @PostMapping("/modificaPaginiProvocare/{id}/{pagini}")
+    public String modificaPaginiProvocare(@PathVariable("id") long id,@PathVariable("pagini") int  pagini)
+    {
+        return ps.modificaPagini(id,pagini);
+    }
 
 }

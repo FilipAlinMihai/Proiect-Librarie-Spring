@@ -61,11 +61,37 @@ public class ProvocareServiceTest {
         assertThat(provocare.getPagini()).isEqualTo(200);
         assertThat(provocare.getZile()).isEqualTo(20);
     }
+    @Test
+    @Order(3)
+    @Transactional
+    public  void modificaProvocare()
+    {
 
+        Utilizator utilizator=us.getPrimulUtilizatorByEmail("admin@gmail.com");
+        Provocare provocare =new Provocare(100,10,utilizator,"Provocare");
+        ps.adauga(provocare);
+
+        assertThat(provocare.getZile()).isEqualTo(10);
+        assertThat(provocare.getPagini()).isEqualTo(100);
+
+        Provocare provocare1=ps.cautaProvocarileUnuiUtilizator(utilizator).get(0);
+        ps.modificaPagini(provocare1.getId(),110);
+        ps.modificaZile(provocare1.getId(),11);
+
+        assertThat(provocare.getZile()).isEqualTo(11);
+        assertThat(provocare.getPagini()).isEqualTo(110);
+
+        List<Provocare> provocari=ps.cautaProvocarileUnuiUtilizator(utilizator);
+        for(Provocare p:provocari)
+        {
+            ps.stergeDupaId(p);
+        }
+
+    }
 
     @Test
     @Transactional
-    @Order(3)
+    @Order(4)
     public void adaugaProvocare()
     {
         int i=ps.cautaToateProvocarile().size()+1;
@@ -89,7 +115,7 @@ public class ProvocareServiceTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     @Transactional
     public void adaugaProvocareEsec()
     {
@@ -104,7 +130,7 @@ public class ProvocareServiceTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     @Transactional
     public void verificareSituatieProvocare()
     {
@@ -134,7 +160,7 @@ public class ProvocareServiceTest {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     @Transactional
     public void stergeDate()
     {

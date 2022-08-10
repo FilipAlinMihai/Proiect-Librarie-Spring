@@ -8,6 +8,7 @@ import com.example.LibrarieSpring.service.UtilizatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -98,37 +99,97 @@ public class CarteController {
     @PostMapping("/modificareAutor/{id}/{autorNou}")
     public String modificareAutor(@PathVariable("id") long id,@PathVariable("autorNou") String autorNou)
     {
-        Carte carte=cs.getCarteById(id);
-        if(carte!=null) {
+        try {
+            Carte carte = cs.getCarteById(id);
+            if (carte != null) {
 
-            cs.modificareAutor(carte,autorNou);
-            return "Modificari efectuate";
+                cs.modificareAutor(carte, autorNou);
+                return "Modificari efectuate";
+            }
+        }catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Cartea nu a fost gasita";
         }
-        else return "Cartea nu a fost gasita";
+        return "Cartea nu a fost gasita";
     }
 
     @PostMapping("/modificareNrPagini/{id}/{pagini}")
     public String modificareNrPagini(@PathVariable("id") long id,@PathVariable("pagini") int pagini)
     {
-        Carte carte=cs.getCarteById(id);
-        if(carte!=null) {
+        try {
+            Carte carte = cs.getCarteById(id);
+            if (carte != null) {
 
-            cs.modificareNrPagini(carte,pagini);
-            return "Modificari efectuate";
+                cs.modificareNrPagini(carte, pagini);
+                return "Modificari efectuate";
+            }
+        }catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Cartea nu a fost gasita";
         }
-        else return "Cartea nu a fost gasita";
+        return "Cartea nu a fost gasita";
     }
 
 
     @PostMapping("/modificareNrCitite/{id}/{pagini}")
     public String modificareNrCitite(@PathVariable("id") long id,@PathVariable("pagini") int pagini)
     {
-        Carte carte=cs.getCarteById(id);
-        if(carte!=null) {
+        try {
+            Carte carte = cs.getCarteById(id);
+            if (carte != null) {
 
-            cs.modificaPaginiCitite(carte,pagini);
-            return "Modificari efectuate";
+                cs.modificaPaginiCitite(carte, pagini);
+                return "Modificari efectuate";
+            }
+        }catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Cartea nu a fost gasita";
         }
-        else return "Cartea nu a fost gasita";
+
+         return "Cartea nu a fost gasita";
     }
+
+    @DeleteMapping("/stergeCarteId/{id}")
+    @Transactional
+    public String stergeCarteDupaId(@PathVariable("id") long id)
+    {
+        try{
+            Carte carte= cs.getCarteById(id);
+            cs.deleteByID(id);
+            return "Cartea a fost stearsa!";
+        }
+        catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Cartea nu a fost gasita";
+        }
+
+    }
+
+    @PostMapping("/aduagaProgresCarte/{id}/{pagini}")
+    public  String adaugaProgresPentruCarte(@PathVariable("id") long id,@PathVariable("pagini") int pagini)
+    {
+        try{
+            Carte carte =cs.getCarteById(id);
+            LoginController.setUtilizatorul(carte.getUtilizator());
+            boolean reusit=cs.adaugaProgres(carte,pagini);
+            if(reusit)
+                return "Progres adaugat!";
+            return "Progresul NU a fost adaugat!";
+
+        }catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Progresul NU a fost adaugat!";
+        }
+    }
+
 }

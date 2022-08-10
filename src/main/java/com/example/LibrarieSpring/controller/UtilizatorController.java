@@ -68,7 +68,7 @@ public class UtilizatorController {
             return "Utilizator nu a fost adaugat";
     }
 
-    @GetMapping("/afisareStstistici/{id}")
+    @GetMapping("/afisareStatistici/{id}")
     public String vizualizareStatistici(@PathVariable("id") long id) {
 
         try {

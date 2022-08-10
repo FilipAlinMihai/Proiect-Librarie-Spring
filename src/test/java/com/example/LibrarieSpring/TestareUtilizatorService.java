@@ -41,11 +41,23 @@ public class TestareUtilizatorService {
 
         assertThat(utilizator.getParola()).isEqualTo("Parola23");
     }
+    @Test
+    @Order(3)
+    public void testModificareUtilizator()
+    {
+        Utilizator utilizator=us.getPrimulUtilizatorByEmail("admin@gmail.com");
+
+        assertThat(utilizator.getParola()).isEqualTo("admin");
+        utilizator.setParola("ADMIN");
+        us.modificaParola(utilizator);
+        Utilizator utilizator1=us.getPrimulUtilizatorByEmail("admin@gmail.com");
+        assertThat(utilizator1.getParola()).isEqualTo("ADMIN");
+    }
 
 
     @Test
     @Transactional
-    @Order(3)
+    @Order(4)
     public void adaugautilizatorBun()
     {
         int i=us.getAllutilizatori().size()+1;
@@ -63,7 +75,7 @@ public class TestareUtilizatorService {
 
     @Test
     @Transactional
-    @Order(4)
+    @Order(5)
     public void adaugautilizatorEsec()
     {
         int i=us.getAllutilizatori().size()+1;
@@ -83,7 +95,7 @@ public class TestareUtilizatorService {
 
     @Test
     @Transactional
-    @Order(5)
+    @Order(6)
     public void cautaDupaEmail()
     {
         List<Utilizator> utilizatori=us.getAllUtilizatori();
@@ -98,7 +110,7 @@ public class TestareUtilizatorService {
 
     @Test
     @Transactional
-    @Order(6)
+    @Order(7)
     public void cautaDupaId()
     {
         List<Utilizator> utilizatori=us.getAllUtilizatori();
@@ -111,13 +123,13 @@ public class TestareUtilizatorService {
         assertThat(utilizatorGasit.getParola()).isEqualTo(utilizator.getParola());
     }
     @Test
-    @Order(7)
+    @Order(8)
     public void testExceptie()
     {
         assertThrows(RuntimeException.class,()->us.getUtilizatorById(1111111));
     }
     @Test
-    @Order(8)
+    @Order(9)
     @Transactional
     public void stergeDate()
     {

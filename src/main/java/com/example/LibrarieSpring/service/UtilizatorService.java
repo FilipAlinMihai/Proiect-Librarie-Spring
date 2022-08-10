@@ -24,6 +24,7 @@ public class UtilizatorService {
 
     @Autowired
     private ProvocareRepository pr;
+
     public void adauaga(Utilizator utilizator)
     {
         ur.saveAndFlush(utilizator);
@@ -83,6 +84,17 @@ public class UtilizatorService {
         ur.deleteById1(id);
     }
 
+    public String situatieProvocareInUtilizator(Provocare provocare)
+    {
+
+        if(provocare.amReusit())
+            return "Provocare indeplinita. Felicitari!";
+        else if(provocare.termenValid())
+            return "Mai ai de citit "+(provocare.getPagini()- provocare.getProgres())+" pagini pana in data de "+provocare.getDataFinal();
+        else
+            return "Termenul limita a expirat!";
+    }
+
 
     public String procesareDateUtilizator(Utilizator utilizator)
     {
@@ -102,7 +114,7 @@ public class UtilizatorService {
         s=String.format("Utilizatorul cu adresa de email %s are :<br> " +
                 " **** Un total de %d carti <br>  ****  El a citit %d pagini dintr-un total de %d pagini <br> " +
                 " **** Are %d colectii !<br>" +
-                " **** A cititin in totalitate urmatoarele carti:<br>",utilizator.getEmail(),numarCarti,numarpagini,totalpagini,numarColectii);
+                " **** A cititin in totalitate urmatoarele carti:<br><br>",utilizator.getEmail(),numarCarti,numarpagini,totalpagini,numarColectii);
 
         List<Carte> cartiFinalizate=cr.cartiFinalizate(utilizator);
 
@@ -112,6 +124,26 @@ public class UtilizatorService {
             s1=s1+"################# "+c.getTitlu()+" scrisa de "+c.getAutor()+"<br>";
         }
         s=s+s1;
+
+        String s3="";
+
+        List<Provocare> provocari=pr.findByUtilizator(utilizator);
+        s3=s3+"<br> **** Are "+provocari.size()+" provocari setate dintre care <br><br>";
+
+        int finalizate=0,esuate=0,inDesfasurare=0;
+        for(Provocare p:provocari)
+        {
+            if(this.situatieProvocareInUtilizator(p).compareTo("Provocare indeplinita. Felicitari!")==0)
+                finalizate=finalizate+1;
+            else if(this.situatieProvocareInUtilizator(p).compareTo("Termenul limita a expirat!")==0)
+                esuate=esuate+1;
+            else
+                inDesfasurare=inDesfasurare+1;
+        }
+        s3=s3+"################# Finalizate: "+finalizate+"<br>";
+        s3=s3+"################# In desfasurare: "+inDesfasurare+"<br>";
+        s3=s3+"################# Esuate: "+esuate+"<br><br>";
+        s=s+s3;
         return s;
     }
 

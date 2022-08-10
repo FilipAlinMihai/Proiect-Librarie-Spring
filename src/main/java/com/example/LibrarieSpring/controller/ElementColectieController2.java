@@ -8,6 +8,7 @@ import com.example.LibrarieSpring.service.CarteService;
 import com.example.LibrarieSpring.service.ColectieService;
 import com.example.LibrarieSpring.service.ElementColectieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,5 +41,19 @@ public class ElementColectieController2 {
             return "Elementul NU a fost adaugat";
         }
         return "Datele introduse sunt incorecte!";
+    }
+
+    @DeleteMapping("/stergeElementColectie/{id}")
+    public String stergeElementColectie(@PathVariable("id") long id)
+    {
+        try {
+            cols.stergeColectieById(id);
+            return  "Elementul a fost sters";
+        }catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return  "Elementul nu a fost sters";
+        }
     }
 }

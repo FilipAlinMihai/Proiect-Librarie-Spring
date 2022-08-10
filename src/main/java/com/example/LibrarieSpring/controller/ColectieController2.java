@@ -11,6 +11,7 @@ import com.example.LibrarieSpring.service.UtilizatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,17 +36,31 @@ public class ColectieController2 {
 
     @RequestMapping(value = "/afisareColectieId/{id}" , method=RequestMethod.GET)
     public Colectie afisareColectieDupaId(@PathVariable long id) {
-        Optional<Colectie> colectia=cs.cautaColectieDupaId(id);
-        if(colectia.isPresent())
+        try {
+            Optional<Colectie> colectia = cs.cautaColectieDupaId(id);
+            if (colectia.isPresent()) {
+                return colectia.get();
+            }
+        }catch (RuntimeException e)
         {
-            return colectia.get();
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+             return new Colectie();
         }
-        else return new Colectie();
+         return new Colectie();
     }
 
     @RequestMapping(value = "/inserareColectie/{id}/{nume}" , method=RequestMethod.POST)
     public String inserareColectie(@PathVariable("id") long id,@PathVariable("nume") String nume) {
-        Utilizator utilizator=us.getUtilizatorById(id);
+        Utilizator utilizator=null;
+        try {
+             utilizator = us.getUtilizatorById(id);
+        }catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Colectia NU a fost adaugata. Utilizatorul nu a fost gasit!";
+        }
         if(utilizator==null)
             return "Colectia NU a fost adaugata. Utilizatorul nu a fost gasit!";
         LoginController.setUtilizatorul(utilizator);
@@ -57,14 +72,41 @@ public class ColectieController2 {
     @PostMapping("/modificareNumeColectie/{id}/{nume}")
     public String modificareNume(@PathVariable("id") long id,@PathVariable("nume") String nume)
     {
-        Optional<Colectie> colectie=cs.cautaColectieDupaId(id);
+        try {
+            Optional<Colectie> colectie = cs.cautaColectieDupaId(id);
 
-        if(colectie.isPresent())
+            if (colectie.isPresent()) {
+                cs.modificaNume(colectie.get(), nume);
+                return "Modificare efectuata!";
+            }
+        }catch (RuntimeException e)
         {
-            cs.modificaNume(colectie.get(),nume);
-            return "Modificare efectuata!";
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Colectia nu a fost gasita!";
         }
-        return "Provocarea nu a fost gasita!";
+        return "Colectia nu a fost gasita!";
+    }
+
+    @DeleteMapping("/stergeColectiePrinID/{id}")
+    @Transactional
+    public String stergeColectiePrinId(@PathVariable("id") long id)
+    {
+        try{
+            Optional<Colectie> colectie=cs.cautaColectieDupaId(id);
+            if(colectie.isPresent())
+            {
+                cs.stergeColectieById(colectie.get().getId());
+                return  "Colectia a fost stearsa!";
+            }
+        }
+        catch (RuntimeException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+            return "Colectia nu a fost gasita!";
+        }
+        return "Colectia nu a fost gasita!";
     }
 
 }
