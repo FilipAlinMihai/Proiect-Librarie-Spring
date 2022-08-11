@@ -119,6 +119,36 @@ public class TestareColectieService {
     @Test
     @Order(6)
     @Transactional
+    public void stergeMultiple()
+    {
+        int i=us.getAllutilizatori().size();
+        int j=cs.getAllBooks().size();
+        int o=colectieService.getColectii().size();
+        Utilizator utilizator=new Utilizator("persoana@gmail.com","parola");
+        us.adauaga(utilizator);
+        Utilizator utilizator1=us.getPrimulUtilizatorByEmail("persoana@gmail.com");
+
+        Carte carte =new Carte("Titlul","Autorul",200,utilizator1);
+        LoginController.setUtilizatorul(utilizator1);
+        cs.adaugaCarte(carte);
+
+        Colectie colectie=new Colectie("Numele Colectiei",utilizator1);
+        colectieService.adaugaColectie(colectie);
+
+        us.stergeUtilizatorId(utilizator1.getId());
+
+        int l=us.getAllutilizatori().size();
+        int h=cs.getAllBooks().size();
+        int p=colectieService.getColectii().size();
+
+        assertThat(i).isEqualTo(l);
+        assertThat(j).isEqualTo(h);
+        assertThat(o).isEqualTo(p);
+    }
+
+    @Test
+    @Order(7)
+    @Transactional
     public void stergeDate()
     {
         Utilizator utilizator=us.getPrimulUtilizatorByEmail("admin@gmail.com");

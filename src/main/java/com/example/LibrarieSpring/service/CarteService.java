@@ -2,9 +2,11 @@ package com.example.LibrarieSpring.service;
 
 import com.example.LibrarieSpring.controller.LoginController;
 import com.example.LibrarieSpring.entity.Carte;
+import com.example.LibrarieSpring.entity.ElementColectie;
 import com.example.LibrarieSpring.entity.Provocare;
 import com.example.LibrarieSpring.entity.Utilizator;
 import com.example.LibrarieSpring.repository.CarteRepository;
+import com.example.LibrarieSpring.repository.ElementColectieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class CarteService {
 
     @Autowired
     private ProvocareService ps;
+
+    @Autowired
+    private ElementColectieRepository ecolr;
 
     public boolean adaugaCarte(Carte addBook)
     {
@@ -86,6 +91,7 @@ public class CarteService {
             List<Provocare> provocari = ps.cautaProvocarileUnuiUtilizator(LoginController.getUtilizatorul());
             for (Provocare p : provocari)
             {
+                if(p.termenValid())
                 p.adaugaProgres(pagini);
             }
             cr.save(cartea);
@@ -96,6 +102,13 @@ public class CarteService {
     }
 
     public boolean deleteByID(long id) {
+
+        Carte carte =cr.cautaDupaId(id);
+        List<ElementColectie> elenteColectie=ecolr.findByCarte(carte);
+        for(ElementColectie ec:elenteColectie)
+        {
+            ecolr.deleteById1(ec.getId());
+        }
         cr.deleteById1(id);
         return true;
     }

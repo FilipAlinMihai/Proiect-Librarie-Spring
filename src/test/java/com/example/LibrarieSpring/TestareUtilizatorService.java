@@ -1,7 +1,10 @@
 package com.example.LibrarieSpring;
 
 
+import com.example.LibrarieSpring.controller.LoginController;
+import com.example.LibrarieSpring.entity.Carte;
 import com.example.LibrarieSpring.entity.Utilizator;
+import com.example.LibrarieSpring.service.CarteService;
 import com.example.LibrarieSpring.service.UtilizatorService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TestareUtilizatorService {
 
     @Autowired
-    UtilizatorService us;
+    private UtilizatorService us;
+
+    @Autowired
+    private CarteService cs;
 
     @Test
     @Order(1)
@@ -126,10 +132,35 @@ public class TestareUtilizatorService {
     @Order(8)
     public void testExceptie()
     {
+
         assertThrows(RuntimeException.class,()->us.getUtilizatorById(1111111));
     }
+
     @Test
     @Order(9)
+    @Transactional
+    public void stergeMultiple()
+    {
+        int i=us.getAllutilizatori().size();
+        int j=cs.getAllBooks().size();
+        Utilizator utilizator=new Utilizator("persoana@gmail.com","parola");
+        us.adauaga(utilizator);
+        Utilizator utilizator1=us.getPrimulUtilizatorByEmail("persoana@gmail.com");
+
+        Carte carte =new Carte("Titlul","Autorul",200,utilizator1);
+        LoginController.setUtilizatorul(utilizator1);
+        cs.adaugaCarte(carte);
+        us.stergeUtilizatorId(utilizator1.getId());
+
+        int l=us.getAllutilizatori().size();
+        int h=cs.getAllBooks().size();
+
+        assertThat(i).isEqualTo(l);
+        assertThat(j).isEqualTo(h);
+
+    }
+    @Test
+    @Order(10)
     @Transactional
     public void stergeDate()
     {

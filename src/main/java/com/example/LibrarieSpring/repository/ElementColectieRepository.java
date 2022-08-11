@@ -17,6 +17,8 @@ public interface ElementColectieRepository  extends JpaRepository<ElementColecti
     List<ElementColectie> findByCarteAndColectie(Carte carte, Colectie colectie);
     ElementColectie findFirstByCarteAndColectie(Carte carte, Colectie colectie);
     List<ElementColectie> findByColectie(Colectie colectie);
+
+    List<ElementColectie> findByCarte(Carte carte);
     @Modifying
     @Query("DELETE FROM ElementColectie a WHERE a.id = :id")
     void deleteById1(@Param("id") Long id);

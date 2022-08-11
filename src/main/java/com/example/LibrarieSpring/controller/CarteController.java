@@ -138,7 +138,7 @@ public class CarteController {
     @PostMapping("/modificareNrCitite/{id}/{pagini}")
     public String modificareNrCitite(@PathVariable("id") long id,@PathVariable("pagini") int pagini)
     {
-        try {
+        try{
             Carte carte = cs.getCarteById(id);
             if (carte != null) {
 
